@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>WhizCo - Influencer Marketing Agency</title>
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <meta content="Saas" name="description">
+        <!-- Bootstrap CSS -->
+            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <!-- Favicon -->
+        <link href="{% static 'img/r4.ico' %}" rel="icon">
+          <link href="{% static 'css/style2.css' %}" rel="stylesheet">
+          <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+          <script class="jsbin" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+          <style>
+                     /* Style for demo, not required */
+
+                     fieldset { padding: .6em 0;border:0;border-top: 1px dotted #ddd; }
+                     legend { font-size: 1.5em; font-weight: bold; color: #555; padding: .5em 1em .5em 0; background: #fff;  }
+                     label { font-size: 1.4em; display: block; margin: .5em 10px .5em 0;  }
+                     input#upload { background: #aaa url(https://dl.dropbox.com/u/20165443/jsFiddle/images/jquery.fileinput.bg-btn.png) bottom repeat-x; padding: .4em 1.2em;border: 1px solid #aaa; color: #222; font-size: 1.2em; font-weight: bold; -moz-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px; cursor: pointer; margin: 2em 0; }
+                     input#upload:hover { background: #eee; color: #111; border-color:#777; }
+                 </style>
+
+    </head>
+
+<body>
+    <nav class="navbar">
+  <div class="logo">
+    <div class="center">
+      <a href="{% url 'instagram' %}">
+      <img  height="60px" src="{% static 'img/whizco.png'  %}" alt="LOGO">
+    </a>
+    </div>
+
+
+  </div>
+  <div class="push-left">
+    <button id="menu-toggler" data-class="menu-active" class="hamburger">
+      <span class="hamburger-line hamburger-line-top"></span>
+      <span class="hamburger-line hamburger-line-middle"></span>
+      <span class="hamburger-line hamburger-line-bottom"></span>
+    </button>
+
+    <!--  Menu compatible with wp_nav_menu  -->
+    <ul id="primary-menu" class="menu nav-menu">
+      <li style="color:#30A3A6;"><strong>Welcome: {{name}}</strong></li>
+      &nbsp;
+      <li class="menu-item current-menu-item"><a class="nav__link"  href="{% url 'logout'  %}">Logout</a></li>
+      </li>
+    </ul>
+
+
+  </div>
+</nav>
+
+<!-- realistic form attributes: <form action="#" method="post" enctype="multipart/form-data"> -->
+
+  <br>
+  <div class="container">
+
+
+  {% if messages %}
+  {% for message in messages %}
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+
+      {{ message }}
+
+
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  <br>
+  {% endfor %}
+</div>
+{% endif %}
+</div>
+
+  <br>
+  <br>
+<div class="container">
+  <h2 style="text-align:center;">INSTAGRAM DM AUTOMATION</h2>
+  <br>
+  <h4 style="text-align:center;"><a href="{% url 'task' %}">CHECK STATUS</a></h4>
+  <hr>
+
+
+    <form method="POST" enctype="multipart/form-data" class="form-inline justify-content-center">
+      {% csrf_token %}
+      <div class="container">
+
+        <div class="row">
+
+          <div class="col-12 col-md-6">
+            <label for="cname">Campaign Name</label>
+            <br>
+            <input type="text" class="form-control" id="cname" name="name" placeholder="Campaign Name" size="50" required="required"  />
+          </div>
+          <div class="col-12 col-md-6">
+            <label for="file_A">Upload Instagram Username File</label>
+            <br>
+            <input type="file" name="username" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" required="required" id="file_A"/>
+            <small>*First column should be of username</small>
+          </div>
+          <div class="col-12 col-md-6">
+            <label for="exampleFormControlTextarea1">Message</label>
+            <textarea name="message"class="form-control" id="exampleFormControlTextarea1" rows="6" cols="55" placeholder="Please Type your Message..." required="required"></textarea>
+            <small>* If you type '{}' in message box, username will be printed instead of {}</small>
+          </div>
+
+        </div>
+
+          <div class="row">
+          <div class="col-6 col-md-6">
+            <br>
+            {% if notable == True %}
+            <button type="submit" name="send" class="btn btn-danger" >SEND</button>
+            {% else %}
+            <button type="submit" name="send" class="btn btn-danger" disabled>SEND</button>
+            {% endif %}
+          </div>
+
+          </div>
+  </div>
+    </form>
+    <br>
+    <h2 style="text-align:center;">IG PENDING MESSAGE</h2>
+    <hr>
+    <form method="POST" action="{% url 'ig_reply' %}">
+      {% csrf_token %}
+      <div class="row">
+
+        <div class="col-12 col-md-6">
+          <label for="cname">Number of Messages</label>
+          <input type="text" class="form-control" id="cname" name="num" placeholder="Number of Messages..." required="required"  />
+        </div>
+
+        <div class="col-12 col-md-6">
+          <br>
+          <br>
+
+          <button type="submit" name="pending" class="btn btn-danger" >Get Pending Messages</button>
+
+        </div>
+      </div>
+    </form>
+    <br>
+    <br>
+    <br>
+
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script src="{% static 'js/main2.js' %}"></script>
+</body>
+</html>
